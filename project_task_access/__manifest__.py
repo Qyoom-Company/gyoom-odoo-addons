@@ -38,8 +38,8 @@
     "depends": ["project"],
     "data": [
         "security/project_task_security.xml",
-        "views/project_project_views.xml",
-        "views/project_task_views.xml",
+        # "views/project_project_views.xml",
+        # "views/project_task_views.xml",
     ],
     "images": ["static/description/banner.jpg"],
     "license": "LGPL-3",

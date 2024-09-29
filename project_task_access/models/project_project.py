@@ -43,3 +43,14 @@ class ProjectProject(models.Model):
                 rec.user_admin_check = True
             else:
                 rec.user_admin_check = False
+
+        # Override the create method (optional)
+    def create(self, vals):
+        # Set the default privacy_visibility if not provided
+        if 'privacy_visibility' not in vals:
+            vals['privacy_visibility'] = 'followers'
+
+        # Create the project record
+        project = super(ProjectProject, self).create(vals)
+
+        return project

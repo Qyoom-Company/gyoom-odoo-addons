@@ -9,7 +9,7 @@
     <field name="inherit_id" ref="hr.view_employee_form"/>
     <field name="arch" type="xml">
         <xpath expr="//field[@name='attendance_ids']" position="attributes">
-            <attribute name="attrs">{'invisible': [('user_has_groups', 'not in', 'hr.group_hr_manager, your_module.group_employee_supervisor')]}</attribute>
+            <attribute name="attrs">{'invisible': [('user_has_groups', 'not in', 'hr.group_hr_manager, bhs_attendance_auto_checkout.group_employee_supervisor')]}</attribute>
         </xpath>
         <xpath expr="//sheet" position="inside">
             <div class="attendance_status" attrs="{'invisible': [('attendance_ids', '=', False)]}">

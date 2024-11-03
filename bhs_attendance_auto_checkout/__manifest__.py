@@ -15,6 +15,7 @@
     'data': [
         'views/attendance_auto_checkout.xml',
         'views/hr_attendance_view_form.xml',
+        'views/hr_supervisor_attendance_access.xml',
         'views/resource_calendar_leaves_tree_inherit.xml',
         'data/attendance_data.xml',
         'data/email_template_public_holiday.xml',

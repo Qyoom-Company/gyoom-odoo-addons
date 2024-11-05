@@ -11,8 +11,11 @@
                 <field name="show_total_hours" invisible="1"/>
                 <field name="total_hours"
                        invisible="show_total_hours == False"/>
+                <field name="show_total_manually_hours" invisible="1"/>
+                <field name="total_logged_hours"
+                       invisible="show_total_manually_hours == False"/>
                 <field name="hour_based_salary"
-                        invisible="show_total_hours == False"/>
+                       invisible="not show_total_hours or not total_logged_hours"/>
             </xpath>
         </field>
     </record>

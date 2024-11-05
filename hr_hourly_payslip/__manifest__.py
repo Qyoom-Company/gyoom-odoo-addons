@@ -31,7 +31,7 @@
     'company': 'Cybrosys Techno Solutions',
     'maintainer': 'Cybrosys Techno Solutions',
     'website': "https://www.cybrosys.com",
-    'depends': ['hr_attendance', 'hr_payroll_community'],
+    'depends': ['hr_attendance', 'hr_payroll_community', 'bhs_attendance_auto_checkout'],
     'data': [
         'views/hr_contract_views.xml',
         'views/hr_payslip_views.xml',

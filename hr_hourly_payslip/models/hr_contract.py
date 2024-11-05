@@ -29,7 +29,11 @@ class HrContract(models.Model):
 
     hourly_payslip = fields.Boolean(help='Enable to see the hours spend by the'
                                          ' employee in the payslip.',
-                                    string='Hourly Payslip')
+                                    string='Hourly Payslip Based on Attendance')
+    hourly_manually_logs = fields.Boolean(help='Enable to see the hours spend by the'
+                                               ' employee in the payslip.',
+                                          string='Hourly Payslip Based on Manually Logs')
+
     hourly_wage = fields.Monetary(string='Hourly Wage', help='Wage per hour for the '
                                                       'employee')
 
@@ -45,9 +49,30 @@ class HrContract(models.Model):
                 'amount_python_compute': 'result = contract.hourly_wage*payslip.total_hours'
             })
 
+    @api.onchange('hourly_manually_logs')
+    def _onchange_manually_hourly_payslip(self):
+        """This method will work when the user modifies the hourly_payslip
+           field. According to the conditions, will add a new python code to
+           the Basic salary rule."""
+        if self.hourly_manually_logs is True:
+            rule_id = self.env['hr.salary.rule'].browse(
+                self.env.ref('hr_payroll_community.hr_rule_basic').id)
+            rule_id.write({
+                'amount_python_compute': 'result = contract.hourly_wage*payslip.total_logged_hours'
+            })
+
+    # @api.constrains('hourly_wage')
+    # def _check_hourly_wage(self):
+    #     """Method to add constraints for the hourly_wage field, as it
+    #     should be a positive value."""
+    #     if self.hourly_payslip is True and self.hourly_wage <= 0:
+    #         raise ValidationError(_('Wage should be a positive value.'))
+
     @api.constrains('hourly_wage')
     def _check_hourly_wage(self):
         """Method to add constraints for the hourly_wage field, as it
         should be a positive value."""
-        if self.hourly_payslip is True and self.hourly_wage <= 0:
+        if (self.hourly_payslip or self.hourly_manually_logs) and self.hourly_wage <= 0:
             raise ValidationError(_('Wage should be a positive value.'))
+
+

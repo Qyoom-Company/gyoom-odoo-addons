@@ -1,20 +1,36 @@
-<record id="group_employee_supervisor" model="res.groups">
-    <field name="name">Employee Supervisor</field>
-    <field name="category_id" ref="base.module_category_hr"/>
-</record>
+<odoo>
+    <!-- Define a new group for Employee Supervisors -->
+    <record id="group_employee_supervisor" model="res.groups">
+        <field name="name">Employee Supervisor</field>
+        <field name="category_id" ref="base.module_category_hr"/>
+    </record>
 
-<record id="view_employee_form_inherit" model="ir.ui.view">
-    <field name="name">view.employee.form.inherit</field>
-    <field name="model">hr.employee</field>
-    <field name="inherit_id" ref="hr.view_employee_form"/>
-    <field name="arch" type="xml">
-        <xpath expr="//field[@name='attendance_ids']" position="attributes">
-            <attribute name="attrs">{'invisible': [('user_has_groups', 'not in', 'hr.group_hr_manager, bhs_attendance_auto_checkout.group_employee_supervisor')]}</attribute>
-        </xpath>
-        <xpath expr="//sheet" position="inside">
-            <div class="attendance_status" attrs="{'invisible': [('attendance_ids', '=', False)]}">
-                <span class="attendance_point" style="color: red;">●</span>
-            </div>
-        </xpath>
-    </field>
-</record>
+    <!-- Extend the Employee Form View to add custom visibility rules and UI elements -->
+    <record id="view_employee_form_inherit" model="ir.ui.view">
+        <field name="name">view.employee.form.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Add visibility conditions to the attendance_ids field, hiding it for unauthorized groups -->
+            <xpath expr="//field[@name='attendance_ids']" position="attributes">
+                <attribute name="attrs">
+                    {
+                        'invisible': [
+                            ('user_has_groups', 'not in', 'hr.group_hr_manager, bhs_attendance_auto_checkout.group_employee_supervisor')
+                        ]
+                    }
+                </attribute>
+            </xpath>
+
+            <!-- Insert an attendance status indicator inside the employee form -->
+            <xpath expr="//sheet" position="inside">
+                <div class="attendance_status"
+                     attrs="{'invisible': [('attendance_ids', '=', False)]}">
+                    <span class="attendance_point" style="color: red;">●</span>
+                </div>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

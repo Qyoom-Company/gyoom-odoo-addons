@@ -7,6 +7,7 @@
             <!-- Adding the field in the group next to 'worked_hours' -->
             <xpath expr="//field[@name='worked_hours']" position="after">
                 <field name="working_hours_manager" widget="float_time" string="Working Hours Approved by Manager"/>
+                <field name="self_logged_hours" />
             </xpath>
         </field>
     </record>
@@ -19,6 +20,7 @@
             <!-- Adding the field after 'worked_hours' in the tree view -->
             <xpath expr="//field[@name='worked_hours']" position="after">
                 <field name="working_hours_manager" string="Working Hours Approved By Manager" optional="show"/>
+                <field name="self_logged_hours" />
             </xpath>
         </field>
     </record>

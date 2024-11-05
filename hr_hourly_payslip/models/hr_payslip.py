@@ -30,11 +30,20 @@ class HrPayslip(models.Model):
                                compute='_compute_total_hours',
                                help='Total worked hours of the employee in the'
                                     ' selected period of time.', digits=(16, 4))
+    total_logged_hours = fields.Float(string='Total Hours Logged Manually by Manager',
+                               compute='_compute_manuall_total_hours',
+                               help='Total Logged worked hours of the employee in the'
+                                    ' selected period of time.', digits=(16, 4))
+
     hour_based_salary = fields.Float(string='Hour Based Salary',
                                      help='Salary based on the worked hours '
                                           'for the employee',
                                      compute='_compute_hour_based_salary')
     show_total_hours = fields.Boolean(string='Related Boolean', default=False,
+                                      help='Will show total_hours in the view'
+                                           ' only if hourly_payslip is enabled'
+                                           ' in the hr_contract.')
+    show_total_manually_hours = fields.Boolean(string='Related Boolean', default=False,
                                       help='Will show total_hours in the view'
                                            ' only if hourly_payslip is enabled'
                                            ' in the hr_contract.')
@@ -45,15 +54,31 @@ class HrPayslip(models.Model):
             payslip is available for the employee."""
         if self.contract_id and self.contract_id.hourly_payslip is True:
             self.show_total_hours = True
+        if self.contract_id and self.contract_id.hourly_manually_logs is True:
+            self.show_total_manually_hours = True
 
     @api.depends('date_from', 'date_to', 'employee_id')
     def _compute_total_hours(self):
-        """Function to compute total worked hours to the particular employee
-            for the given period of date."""
+        """Function to compute total worked hours for the particular employee
+           for the given period of date."""
         for record in self:
-            record.total_hours = sum(self.env['hr.attendance'].search(
-                [('employee_id', '=', record.employee_id.id)]).filtered(
-                lambda ids: record.date_from <= ids.check_in.date() <= record.date_to).mapped('worked_hours'))
+            attendances = self.env['hr.attendance'].search([
+                ('employee_id', '=', record.employee_id.id),
+                ('check_in', '>=', record.date_from),
+                ('check_in', '<=', record.date_to)
+            ])
+            record.total_hours = sum(attendances.mapped('worked_hours'))
+
+    def _compute_manuall_total_hours(self):
+        """Function to compute manually logged total hours for the particular employee
+           for the given period of date."""
+        for record in self:
+            attendances = self.env['hr.attendance'].search([
+                ('employee_id', '=', record.employee_id.id),
+                ('check_in', '>=', record.date_from),
+                ('check_in', '<=', record.date_to)
+            ])
+            record.total_logged_hours = sum(attendances.mapped('working_hours_manager'))
 
     @api.depends('total_hours')
     def _compute_hour_based_salary(self):

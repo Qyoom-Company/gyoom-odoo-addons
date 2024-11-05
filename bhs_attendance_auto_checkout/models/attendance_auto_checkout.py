@@ -47,6 +47,10 @@ class BHHrAttendance(models.Model):
     _inherit = 'hr.attendance'
 
     working_hours_manager = fields.Float(string="Working Hours Approved by Manager", help="Number of working hours approved by the manager")
+    self_logged_hours = fields.Float(
+        string="Self-Logged Hours",
+        help="Hours logged by the employee, used for payroll calculation"
+    )
 
     # Auto Check Out
     @api.model

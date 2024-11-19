@@ -34,7 +34,7 @@
     'depends': ['hr_attendance', 'hr_payroll_community', 'bhs_attendance_auto_checkout'],
     'data': [
         'views/hr_contract_views.xml',
-        # 'views/hr_payslip_views.xml',
+        'views/hr_payslip_views.xml',
     ],
     'images': ['static/description/banner.jpg'],
     'license': 'LGPL-3',

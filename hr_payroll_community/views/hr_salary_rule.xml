@@ -1,0 +1,19 @@
+<odoo>
+    <!-- Define the Salary Rule Category -->
+    <record id="hr_category_basic" model="hr.salary.rule.category">
+        <field name="name">Basic Salary</field>
+        <field name="code">BASIC</field>
+    </record>
+
+    <!-- Define the Basic Salary Rule -->
+    <record id="hr_rule_basic" model="hr.salary.rule">
+        <field name="name">Basic</field>
+        <field name="code">BASIC</field>
+        <field name="category_id" ref="hr_category_basic"/>
+        <field name="amount_select" eval="'fixed'"/>
+        <field name="amount" eval="1000"/> <!-- You can set this as per your need -->
+        <field name="sequence" eval="1"/>
+        <field name="condition_select" eval="'none'"/>
+        <field name="payslip_type" eval="'input'"/>
+    </record>
+</odoo>

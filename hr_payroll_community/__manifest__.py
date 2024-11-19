@@ -54,6 +54,7 @@
         'views/hr_employee_views.xml',
         'views/hr_payslip_run_views.xml',
         'views/res_config_settings_views.xml',
+        'views/hr_salary_rule.xml',
 
     ],
     'demo': ['data/hr_payroll_demo.xml'],
